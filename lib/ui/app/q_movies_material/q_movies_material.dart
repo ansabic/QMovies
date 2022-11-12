@@ -13,7 +13,6 @@ class QMoviesMaterial extends StatelessWidget {
     return MaterialApp(
       title: Constants.appName,
       onGenerateRoute: (settings) {
-        debugPrint("TEST");
         return PageRouteBuilder(
           settings: settings,
           pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
@@ -26,6 +25,7 @@ class QMoviesMaterial extends StatelessWidget {
         );
       },
       theme: ThemeData(
+        fontFamily: "SFPro",
         primarySwatch: Colors.blue,
       ),
       home: const SplashScreen(),
