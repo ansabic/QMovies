@@ -1,13 +1,9 @@
-
-
 abstract class LocalMapRepository<K, V> {
-  Future<void> putAt({required K key, required V element});
-
-  Future<void> insertElementsAt({required K key, required List<V> elements});
+  Future<void> putAt({required K key, required List<V> element});
 
   List<V> getAllElementsAt({required K key});
 
-  Map<K, V> getAll();
+  Map<K, List<V>> getAll();
 
   Future<void> removeAll();
 

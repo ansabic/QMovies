@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import '../../model/movie/movie.dart';
 
 abstract class MoviesService {
-  List<Movie> getMoviesMaxPage({required int page});
+  Stream<List<Movie>> moviesStream();
+
+  void syncMoviesMaxPage({required int page});
 }

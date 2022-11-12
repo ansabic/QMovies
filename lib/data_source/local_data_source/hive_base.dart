@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:q_movies/data_source/local_data_source/local_data_source.dart';
+import 'package:q_movies/model/loaded_pages/max_pages.dart';
 
 import '../../model/movie/movie.dart';
 
@@ -39,78 +41,91 @@ class HiveBase extends LocalDataSource {
     if (!_registeredAdapters) {
       _registeredAdapters = true;
       Hive.registerAdapter(MovieAdapter());
+      Hive.registerAdapter(MaxPagesAdapter());
+    }
+  }
+
+  Box<dynamic> maxPages() => Hive.box("max_pages");
+
+  Box<dynamic> movies() => Hive.box("movies");
+
+  Box<dynamic>? getProperBox<T>() {
+    switch (T) {
+      case Movie:
+        return movies();
+      case MaxPages:
+        return maxPages();
+    }
+    return null;
+  }
+
+  @override
+  Future<void> addItem<T>({required T item}) async {
+    await getProperBox<T>()?.add(item);
+  }
+
+  @override
+  Future<void> addItems<T>({required List<T> items}) async {
+    await getProperBox<T>()?.addAll(items);
+  }
+
+  @override
+  Future<void> deleteAll<T>() async {
+    final box = getProperBox<T>();
+    await box?.deleteAll(box.keys);
+  }
+
+  @override
+  Future<void> deleteItemInList<T>({required T item}) async {
+    final box = getProperBox<T>();
+    final existing = getItem<T>(item: item);
+    final index = box?.values.toList().indexOf(existing);
+    if (index != null && index != -1) {
+      await box?.deleteAt(index);
     }
   }
 
   @override
-  Future<void> addItem<T>({required T item}) {
-    // TODO: implement addItem
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> addItems<T>({required List<T> items}) {
-    // TODO: implement addItems
-    throw UnimplementedError();
+  List<T> getAll<T>() {
+    return getProperBox<T>()?.values.toList().cast<T>() ?? [];
   }
 
   @override
   bool containsItem<T>({required T item}) {
-    // TODO: implement containsItem
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> deleteAll<T>() {
-    // TODO: implement deleteAll
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> deleteItemInList<T>({required T item}) {
-    // TODO: implement deleteItemInList
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> deleteItemInMap<K, V>({required V item, required K key}) {
-    // TODO: implement deleteItemInMap
-    throw UnimplementedError();
-  }
-
-  @override
-  List<T> getAll<T>() {
-    // TODO: implement getAll
-    throw UnimplementedError();
-  }
-
-  @override
-  List<V> getAt<K, V>({required K key}) {
-    // TODO: implement getAt
-    throw UnimplementedError();
-  }
-
-  @override
-  Map<K, List<V>> getDictionary<K, V>() {
-    // TODO: implement getDictionary
-    throw UnimplementedError();
+    return getItem<T>(item: item) != null;
   }
 
   @override
   T? getItem<T>({required T item}) {
-    // TODO: implement getItem
-    throw UnimplementedError();
+    return getProperBox<T>()?.values.firstWhereOrNull((element) => element == item);
   }
 
   @override
-  Future<void> putAt<K, V>({required List<V> items, required K key}) {
-    // TODO: implement putAt
-    throw UnimplementedError();
+  Stream<dynamic>? watch<T>() {
+    return getProperBox<T>()?.watch();
   }
 
   @override
-  Stream? watch<T>() {
-    // TODO: implement watch
-    throw UnimplementedError();
+  Map<K, List<V>> getDictionary<K, V>() {
+    return getProperBox<V>()?.toMap().map((key, value) => MapEntry(key, (value as List<dynamic>).cast<V>())) ?? {};
+  }
+
+  @override
+  Future<void> putAt<K, V>({required List<V> items, required K key}) async {
+    await getProperBox<V>()?.put(key.toString(), items);
+  }
+
+  @override
+  List<V> getAt<K, V>({required K key}) {
+    return (getProperBox<V>()?.get(key) ?? []) as List<V>;
+  }
+
+  @override
+  Future<void> deleteItemInMap<K, V>({required V item, required K key}) async {
+    final box = getProperBox<V>();
+    final list = box?.get(key) as List<V>;
+    if (list.isNotEmpty) {
+      await box?.put(key, list.where((element) => element != item));
+    }
   }
 }
