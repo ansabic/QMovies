@@ -23,7 +23,7 @@ class MovieServiceImpl implements MoviesService {
   MovieServiceImpl(this._remoteMovieRepository, this._localMovieRepository, this._maxPagesRepository);
 
   @override
-  void syncMoviesMaxPage({required int page}) async {
+  Future<bool> syncMoviesMaxPage({required int page}) async {
     if (!_isActive) {
       _isActive = true;
       final elements = _maxPagesRepository.getAllElements();
@@ -45,7 +45,9 @@ class MovieServiceImpl implements MoviesService {
       _isActive = false;
       movieStreamController
           .add(moviesMap.entries.where((element) => element.key <= page).map((e) => e.value).flattened.toList());
+      return true;
     }
+    return false;
   }
 
   @override

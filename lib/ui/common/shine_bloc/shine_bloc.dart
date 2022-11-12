@@ -5,7 +5,6 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 
 part 'shine_event.dart';
-
 part 'shine_state.dart';
 
 class ShineBloc extends Bloc<ShineEvent, ShineState> {
@@ -35,7 +34,7 @@ class ShineBloc extends Bloc<ShineEvent, ShineState> {
 
   @override
   Future<void> close() {
-    timer?.cancel();
+    add(StopShine());
     return super.close();
   }
 }

@@ -26,6 +26,7 @@ import '../service/movies_pagination_controller/movies_pagination_controller.dar
 import '../service/movies_pagination_controller/movies_pagination_controller_impl.dart' as _i16;
 import '../service/movies_service/movies_service.dart' as _i21;
 import '../service/movies_service/movies_service_impl.dart' as _i22;
+import '../ui/splash_screen/splash_screen_bloc.dart' as _i23;
 import '../use_cases/build_popular_paginated_queries.dart' as _i3;
 import '../use_cases/format_to_basic_auth.dart' as _i4;
 import '../use_cases/mappers/popular_response_to_movie_movie_page.dart' as _i17; // ignore_for_file: unnecessary_lambdas
@@ -68,5 +69,6 @@ _i1.GetIt $initGetIt(
         get<_i10.LocalMapRepository<int, _i11.Movie>>(),
         get<_i7.LocalListRepository<_i8.MaxPages>>(),
       ));
+  gh.factory<_i23.SplashScreenBloc>(() => _i23.SplashScreenBloc(get<_i21.MoviesService>()));
   return get;
 }

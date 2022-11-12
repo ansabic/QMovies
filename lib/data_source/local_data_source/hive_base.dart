@@ -35,6 +35,7 @@ class HiveBase extends LocalDataSource {
       await secureStorage.write(key: securityKey, value: key);
     }
     await Hive.openBox("movies", encryptionCipher: HiveAesCipher(base64Decode(key)));
+    await Hive.openBox("max_pages", encryptionCipher: HiveAesCipher(base64Decode(key)));
   }
 
   static void _registerAdapters() {
@@ -112,7 +113,7 @@ class HiveBase extends LocalDataSource {
 
   @override
   Future<void> putAt<K, V>({required List<V> items, required K key}) async {
-    await getProperBox<V>()?.put(key.toString(), items);
+    await getProperBox<V>()?.put(key, items);
   }
 
   @override
