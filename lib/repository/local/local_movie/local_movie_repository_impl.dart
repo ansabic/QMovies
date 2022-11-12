@@ -2,9 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:q_movies/model/movie/movie.dart';
 import 'package:q_movies/repository/local/abstract/local_map_repository.dart';
 
-import '../abstract/local_list_repository.dart';
-
-@Injectable(as: LocalListRepository<Movie>)
+@Injectable(as: LocalMapRepository<int, Movie>)
 class LocalMovieRepositoryImpl implements LocalMapRepository<int, Movie> {
   @override
   Map<int, Movie> getAll() {

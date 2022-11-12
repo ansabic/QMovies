@@ -1,10 +1,9 @@
 import 'package:injectable/injectable.dart';
 import 'package:q_movies/model/loaded_pages/max_pages.dart';
 import 'package:q_movies/repository/local/abstract/local_list_repository.dart';
-import 'package:q_movies/repository/local/loaded_pages_repository/loaded_pages_repository.dart';
 
-@Injectable(as: LoadedPagesRepository)
-class LoadedPagesRepositoryImpl implements LocalListRepository<MaxPages> {
+@Injectable(as: LocalListRepository<MaxPages>)
+class MaxPagesRepositoryImpl implements LocalListRepository<MaxPages> {
   @override
   List<MaxPages> getAllElements() {
     // TODO: implement getAllElements
