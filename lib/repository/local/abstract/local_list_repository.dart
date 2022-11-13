@@ -7,6 +7,8 @@ abstract class LocalListRepository<T> {
 
   List<T> getAllElements();
 
+  Future<void> removeItem({required T element});
+
   Future<void> removeAll();
 
   Stream<dynamic>? watch();

@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:q_movies/data_source/local_data_source/local_data_source.dart';
+import 'package:q_movies/model/genre/genre.dart';
 import 'package:q_movies/model/loaded_pages/max_pages.dart';
 
 import '../../model/movie/movie.dart';
@@ -36,6 +37,7 @@ class HiveBase extends LocalDataSource {
     }
     await Hive.openBox("movies", encryptionCipher: HiveAesCipher(base64Decode(key)));
     await Hive.openBox("max_pages", encryptionCipher: HiveAesCipher(base64Decode(key)));
+    await Hive.openBox("genres", encryptionCipher: HiveAesCipher(base64Decode(key)));
   }
 
   static void _registerAdapters() {
@@ -43,6 +45,7 @@ class HiveBase extends LocalDataSource {
       _registeredAdapters = true;
       Hive.registerAdapter(MovieAdapter());
       Hive.registerAdapter(MaxPagesAdapter());
+      Hive.registerAdapter(GenreAdapter());
     }
   }
 
@@ -50,12 +53,16 @@ class HiveBase extends LocalDataSource {
 
   Box<dynamic> movies() => Hive.box("movies");
 
+  Box<dynamic> genres() => Hive.box("genres");
+
   Box<dynamic>? getProperBox<T>() {
     switch (T) {
       case Movie:
         return movies();
       case MaxPages:
         return maxPages();
+      case Genre:
+        return genres();
     }
     return null;
   }

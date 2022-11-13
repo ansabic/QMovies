@@ -38,4 +38,9 @@ class MaxPagesRepositoryImpl implements LocalListRepository<MaxPages> {
   Stream? watch() {
     return localDataSource.watch<MaxPages>();
   }
+
+  @override
+  Future<void> removeItem({required MaxPages element}) async {
+    await localDataSource.deleteItemInList<MaxPages>(item: element);
+  }
 }

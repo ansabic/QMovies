@@ -22,4 +22,10 @@ class ApiClient with ImdbEndpoints {
     return await _dioClient.get(fullPath,
         queryParameters: _buildPopularPaginatedQuery.execute(language: language, page: page));
   }
+
+  @override
+  Future<Response<Map<String, dynamic>>> getAllGenres() async {
+    const fullPath = EndpointsConstants.baseUrl + EndpointsConstants.genres;
+    return await _dioClient.get(fullPath);
+  }
 }
