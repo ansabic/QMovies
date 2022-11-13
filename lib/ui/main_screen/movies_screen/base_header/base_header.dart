@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:q_movies/common/assets.dart';
+import 'package:q_movies/common/custom_colors.dart';
 
 class BaseHeader extends StatelessWidget {
   const BaseHeader({Key? key}) : super(key: key);
@@ -27,7 +28,7 @@ class BaseHeader extends StatelessWidget {
                 padding: EdgeInsets.only(top: textTopPadding),
                 child: const Text(
                   "Popular",
-                  style: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.w600),
+                  style: TextStyle(fontSize: 22, color: CustomColors.almostWhite, fontWeight: FontWeight.w600),
                 ),
               )
             ],

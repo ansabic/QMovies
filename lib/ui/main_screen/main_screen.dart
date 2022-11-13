@@ -1,13 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:q_movies/model/main_pages/main_pages.dart';
-import 'package:q_movies/ui/base_header/base_header.dart';
 import 'package:q_movies/ui/base_scaffold/base_scaffold.dart';
 import 'package:q_movies/ui/common/error_screen.dart';
 import 'package:q_movies/ui/main_screen/favorites_screen/favorites_screen.dart';
 import 'package:q_movies/ui/main_screen/movies_screen/movies_screen.dart';
 
 import 'main_screen_bloc.dart';
+import 'movies_screen/base_header/base_header.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);

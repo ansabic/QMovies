@@ -20,6 +20,7 @@ class MoviesScreen extends StatelessWidget {
           return ListView.builder(
               controller: getIt<MoviesPaginationController>().scrollController,
               shrinkWrap: true,
+              padding: EdgeInsets.zero,
               itemCount: (movies.data ?? []).length,
               itemBuilder: (context, index) => MovieItem(movie: (movies.data ?? [])[index]));
         });
