@@ -15,6 +15,13 @@ class BaseScaffold extends StatelessWidget {
         android: Scaffold(
           body: child,
           backgroundColor: backgroundColor,
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: Colors.black,
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.movie), label: "Movies"),
+              BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Favorites")
+            ],
+          ),
         ),
         iOS: CupertinoPageScaffold(
           backgroundColor: backgroundColor,
