@@ -6,6 +6,4 @@ abstract class LocalMapRepository<K, V> {
   Map<K, List<V>> getAll();
 
   Future<void> removeAll();
-
-  Stream<dynamic>? watch();
 }

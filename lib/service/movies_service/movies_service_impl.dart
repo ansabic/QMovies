@@ -3,19 +3,19 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:q_movies/model/movie/movie.dart';
+import 'package:q_movies/repository/local/max_pages/max_pages_repository_impl.dart';
 import 'package:q_movies/repository/remote/remote_movie/remote_movie_repository.dart';
 import 'package:q_movies/service/movies_service/movies_service.dart';
 
 import '../../common/result.dart';
 import '../../model/loaded_pages/max_pages.dart';
-import '../../repository/local/abstract/local_list_repository.dart';
-import '../../repository/local/abstract/local_map_repository.dart';
+import '../../repository/local/local_movie/local_movie_repository.dart';
 
 @Injectable(as: MoviesService)
 class MovieServiceImpl implements MoviesService {
   final RemoteMovieRepository _remoteMovieRepository;
-  final LocalMapRepository<int, Movie> _localMovieRepository;
-  final LocalListRepository<MaxPages> _maxPagesRepository;
+  final LocalMovieRepository _localMovieRepository;
+  final LocalMaxPagesRepository _maxPagesRepository;
 
   bool _isActive = false;
   StreamController<List<Movie>> movieStreamController = StreamController();
@@ -26,8 +26,7 @@ class MovieServiceImpl implements MoviesService {
   Future<bool> syncMoviesMaxPage({required int page}) async {
     if (!_isActive) {
       _isActive = true;
-      final elements = _maxPagesRepository.getAllElements();
-      final maxPages = elements.isNotEmpty ? elements.first.max : 0;
+      final maxPages = _maxPagesRepository.getSingle() ?? 0;
       final moviesMap = _localMovieRepository.getAll();
       final loadedPages = _localMovieRepository.getAll().keys.length;
 
@@ -37,8 +36,8 @@ class MovieServiceImpl implements MoviesService {
           final moviesRemote = moviesRemoteResult.value!;
           await _localMovieRepository.putAt(key: moviesRemote.page, element: moviesRemote.movies);
           if (moviesRemote.total != maxPages) {
-            await _maxPagesRepository.removeAll();
-            await _maxPagesRepository.insertElement(element: MaxPages(max: moviesRemote.total));
+            await _maxPagesRepository.removeData();
+            await _maxPagesRepository.setSingle(data: MaxPages(max: moviesRemote.total));
           }
         }
       }

@@ -1,11 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:q_movies/common/assets.dart';
 import 'package:q_movies/common/custom_colors.dart';
-import 'package:q_movies/repository/local/abstract/local_list_repository.dart';
+import 'package:q_movies/repository/local/local_genres/local_genres_repository.dart';
 
 import '../../../../common/constants.dart';
 import '../../../../di/di.dart';
-import '../../../../model/genre/genre.dart';
 import '../../../../model/movie/movie.dart';
 
 class MovieItem extends StatelessWidget {
@@ -20,7 +19,7 @@ class MovieItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final genres = getIt<LocalListRepository<Genre>>()
+    final genres = getIt<LocalGenresRepository>()
         .getAllElements()
         .where((element) => movie.genreIds?.contains(element.id) == true)
         .toList();

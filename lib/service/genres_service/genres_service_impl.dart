@@ -1,15 +1,15 @@
 import 'package:injectable/injectable.dart';
+import 'package:q_movies/repository/local/local_genres/local_genres_repository.dart';
 import 'package:q_movies/repository/remote/remote_genre/remote_genre_repository.dart';
 
 import '../../common/result.dart';
 import '../../model/genre/genre.dart';
-import '../../repository/local/abstract/local_list_repository.dart';
 import 'genres_service.dart';
 
 @Injectable(as: GenresService)
 class GenresServiceImpl extends GenresService {
   final RemoteGenreRepository _remoteGenreRepository;
-  final LocalListRepository<Genre> _localGenreRepository;
+  final LocalGenresRepository _localGenreRepository;
 
   GenresServiceImpl(this._remoteGenreRepository, this._localGenreRepository);
 

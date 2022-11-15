@@ -1,46 +1,27 @@
 import 'package:injectable/injectable.dart';
-import 'package:q_movies/data_source/local_data_source/local_data_source.dart';
+import 'package:q_movies/data_source/local_data_source/impl/max_pages_data_source.dart';
 import 'package:q_movies/model/loaded_pages/max_pages.dart';
-import 'package:q_movies/repository/local/abstract/local_list_repository.dart';
 
-@Injectable(as: LocalListRepository<MaxPages>)
-class MaxPagesRepositoryImpl implements LocalListRepository<MaxPages> {
-  LocalDataSource localDataSource;
+import '../abstract/local_single_repository.dart';
 
-  MaxPagesRepositoryImpl(this.localDataSource);
+@injectable
+class LocalMaxPagesRepository implements LocalSingleRepository<MaxPages> {
+  MaxPagesDataSource maxPagesDataSource;
+
+  LocalMaxPagesRepository(this.maxPagesDataSource);
 
   @override
-  List<MaxPages> getAllElements() {
-    return localDataSource.getAll<MaxPages>();
+  MaxPages? getSingle() {
+    return maxPagesDataSource.getSingle();
   }
 
   @override
-  bool hasElement({required MaxPages element}) {
-    return localDataSource.getAll<MaxPages>().isNotEmpty;
+  Future<void> removeData() async {
+    await maxPagesDataSource.removeData();
   }
 
   @override
-  Future<void> insertElement({required MaxPages element}) async {
-    await localDataSource.addItem<MaxPages>(item: element);
-  }
-
-  @override
-  Future<void> insertElements({required List<MaxPages> elements}) async {
-    await localDataSource.addItems<MaxPages>(items: elements);
-  }
-
-  @override
-  Future<void> removeAll() async {
-    await localDataSource.deleteAll<MaxPages>();
-  }
-
-  @override
-  Stream? watch() {
-    return localDataSource.watch<MaxPages>();
-  }
-
-  @override
-  Future<void> removeItem({required MaxPages element}) async {
-    await localDataSource.deleteItemInList<MaxPages>(item: element);
+  Future<void> setSingle({required MaxPages data}) async {
+    await maxPagesDataSource.setSingle(data: data);
   }
 }

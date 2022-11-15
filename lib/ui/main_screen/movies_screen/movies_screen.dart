@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:q_movies/model/movie/movie.dart';
-import 'package:q_movies/repository/local/abstract/local_map_repository.dart';
+import 'package:q_movies/repository/local/local_movie/local_movie_repository.dart';
 import 'package:q_movies/service/movies_service/movies_service.dart';
 import 'package:q_movies/ui/main_screen/movies_screen/movie_item/movie_item.dart';
 
@@ -14,7 +14,7 @@ class MoviesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Movie>>(
-        initialData: getIt<LocalMapRepository<int, Movie>>().getAll().values.flattened.toList(),
+        initialData: getIt<LocalMovieRepository>().getAll().values.flattened.toList(),
         stream: getIt<MoviesService>().moviesStream(),
         builder: (context, movies) {
           return ListView.builder(
