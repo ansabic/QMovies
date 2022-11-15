@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:q_movies/common/assets.dart';
 import 'package:q_movies/common/custom_colors.dart';
 import 'package:q_movies/common/mobile_platform.dart';
 
@@ -17,9 +18,9 @@ class BaseScaffold extends StatelessWidget {
           backgroundColor: backgroundColor,
           bottomNavigationBar: BottomNavigationBar(
             backgroundColor: Colors.black,
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.movie), label: "Movies"),
-              BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Favorites")
+            items: [
+              BottomNavigationBarItem(icon: Image.asset(Assets.movies), label: "Movies"),
+              BottomNavigationBarItem(icon: Image.asset(Assets.favorites), label: "Favorites")
             ],
           ),
         ),
