@@ -6,27 +6,27 @@ part of 'favorites.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class FavoritesAdapter extends TypeAdapter<Favorites> {
+class FavoriteAdapter extends TypeAdapter<Favorite> {
   @override
   final int typeId = 3;
 
   @override
-  Favorites read(BinaryReader reader) {
+  Favorite read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Favorites(
-      ids: (fields[0] as List).cast<int>(),
+    return Favorite(
+      id: fields[0] as int,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Favorites obj) {
+  void write(BinaryWriter writer, Favorite obj) {
     writer
       ..writeByte(1)
       ..writeByte(0)
-      ..write(obj.ids);
+      ..write(obj.id);
   }
 
   @override
@@ -34,5 +34,5 @@ class FavoritesAdapter extends TypeAdapter<Favorites> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is FavoritesAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      identical(this, other) || other is FavoriteAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }

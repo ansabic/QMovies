@@ -8,4 +8,8 @@ class Assets {
   static const movies = "${_assetsRoot}movies.png";
 
   static const favorites = "${_assetsRoot}favorites.png";
+
+  static const favoritePicked = "${_assetsRoot}favorite_picked.png";
+
+  static const favoriteUnpicked = "${_assetsRoot}favorite_unpicked.png";
 }

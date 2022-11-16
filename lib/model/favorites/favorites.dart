@@ -4,9 +4,9 @@ import 'package:q_movies/common/hive_type_id.dart';
 part 'favorites.g.dart';
 
 @HiveType(typeId: HiveTypeId.favoritesTypeId)
-class Favorites {
+class Favorite {
   @HiveField(0)
-  final List<int> ids;
+  final int id;
 
-  const Favorites({required this.ids});
+  const Favorite({required this.id});
 }

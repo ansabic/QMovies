@@ -61,7 +61,7 @@ class HiveBase {
         return HiveTypeId.maxPagesTypeId;
       case Genre:
         return HiveTypeId.genreTypeId;
-      case Favorites:
+      case Favorite:
         return HiveTypeId.favoritesTypeId;
     }
     return -1;

@@ -3,4 +3,4 @@ import 'package:q_movies/data_source/local_data_source/abstract_hive/local_list_
 import 'package:q_movies/model/favorites/favorites.dart';
 
 @injectable
-class FavoritesDataSource extends LocalListHive<Favorites> {}
+class FavoritesDataSource extends LocalListHive<Favorite> {}
