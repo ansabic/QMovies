@@ -8,7 +8,11 @@ class MainScreenBloc extends Bloc<MainScreenEvent, MainScreenState> {
   final PageController pageController = PageController();
 
   MainScreenBloc() : super(const MainScreenInitial()) {
-    on<ChangePage>((event, emit) {
+    on<ChangePageNavigation>((event, emit) {
+      pageController.animateToPage(event.page, duration: const Duration(milliseconds: 300), curve: Curves.linear);
+    });
+
+    on<ChangePageSwipe>((event, emit) {
       emit(RefreshMainScreenState(page: event.page));
     });
   }

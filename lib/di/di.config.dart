@@ -19,17 +19,15 @@ import '../repository/local/favorites_repository/favorites_repository.dart' as _
 import '../repository/local/local_genres/local_genres_repository.dart' as _i8;
 import '../repository/local/local_movie/local_movie_repository.dart' as _i16;
 import '../repository/local/max_pages/max_pages_repository_impl.dart' as _i15;
-import '../repository/remote/remote_genre/remote_genre_reposiotry_impl.dart' as _i18;
-import '../repository/remote/remote_genre/remote_genre_repository.dart' as _i17;
-import '../repository/remote/remote_movie/remote_movie_repository.dart' as _i19;
-import '../repository/remote/remote_movie/remote_movie_repository_impl.dart' as _i20;
-import '../service/genres_service/genres_service.dart' as _i22;
-import '../service/genres_service/genres_service_impl.dart' as _i23;
-import '../service/movies_pagination_controller/movies_pagination_controller.dart' as _i27;
-import '../service/movies_pagination_controller/movies_pagination_controller_impl.dart' as _i28;
-import '../service/movies_service/movies_service.dart' as _i24;
-import '../service/movies_service/movies_service_impl.dart' as _i25;
-import '../ui/main_screen/favorites_screen/favorites_bloc.dart' as _i21;
+import '../repository/remote/remote_genre/remote_genre_reposiotry_impl.dart' as _i19;
+import '../repository/remote/remote_genre/remote_genre_repository.dart' as _i18;
+import '../repository/remote/remote_movie/remote_movie_repository.dart' as _i20;
+import '../repository/remote/remote_movie/remote_movie_repository_impl.dart' as _i21;
+import '../service/genres_service/genres_service.dart' as _i23;
+import '../service/genres_service/genres_service_impl.dart' as _i24;
+import '../service/movies_pagination_controller/movies_pagination_controller.dart' as _i17;
+import '../service/movies_service/movies_service.dart' as _i25;
+import '../ui/main_screen/favorites_screen/favorites_bloc.dart' as _i22;
 import '../ui/splash_screen/splash_screen_bloc.dart' as _i26;
 import '../use_cases/build_popular_paginated_queries.dart' as _i3;
 import '../use_cases/format_to_basic_auth.dart' as _i6;
@@ -61,32 +59,28 @@ _i1.GetIt $initGetIt(
   gh.factory<_i14.ApiClient>(() => _i14.ApiClient(get<_i3.BuildPopularPaginatedQuery>()));
   gh.factory<_i15.LocalMaxPagesRepository>(() => _i15.LocalMaxPagesRepository(get<_i11.MaxPagesDataSource>()));
   gh.factory<_i16.LocalMovieRepository>(() => _i16.LocalMovieRepository(get<_i12.MoviesDataSource>()));
-  gh.factory<_i17.RemoteGenreRepository>(() => _i18.RemoteGenreRepositoryImpl(get<_i14.ApiClient>()));
-  gh.factory<_i19.RemoteMovieRepository>(() => _i20.RemoteMovieRepositoryImpl(
+  gh.singleton<_i17.MoviesPaginationController>(_i17.MoviesPaginationController(
+    get<_i15.LocalMaxPagesRepository>(),
+    get<_i16.LocalMovieRepository>(),
+  ));
+  gh.factory<_i18.RemoteGenreRepository>(() => _i19.RemoteGenreRepositoryImpl(get<_i14.ApiClient>()));
+  gh.factory<_i20.RemoteMovieRepository>(() => _i21.RemoteMovieRepositoryImpl(
         get<_i14.ApiClient>(),
         get<_i13.PopularResponseToMoviePage>(),
       ));
-  gh.factory<_i21.FavoritesBloc>(() => _i21.FavoritesBloc(
+  gh.lazySingleton<_i22.FavoritesBloc>(() => _i22.FavoritesBloc(
         get<_i5.FavoritesRepository>(),
         get<_i16.LocalMovieRepository>(),
       ));
-  gh.factory<_i22.GenresService>(() => _i23.GenresServiceImpl(
-        get<_i17.RemoteGenreRepository>(),
+  gh.factory<_i23.GenresService>(() => _i24.GenresServiceImpl(
+        get<_i18.RemoteGenreRepository>(),
         get<_i8.LocalGenresRepository>(),
       ));
-  gh.factory<_i24.MoviesService>(() => _i25.MovieServiceImpl(
-        get<_i19.RemoteMovieRepository>(),
-        get<_i16.LocalMovieRepository>(),
-        get<_i15.LocalMaxPagesRepository>(),
-      ));
-  gh.factory<_i26.SplashScreenBloc>(() => _i26.SplashScreenBloc(
-        get<_i24.MoviesService>(),
-        get<_i22.GenresService>(),
-      ));
-  gh.factory<_i27.MoviesPaginationController>(() => _i28.MoviesPaginationControllerImpl(
-        get<_i15.LocalMaxPagesRepository>(),
-        get<_i16.LocalMovieRepository>(),
-        get<_i24.MoviesService>(),
-      ));
+  gh.singleton<_i25.MovieService>(_i25.MovieService(
+    get<_i20.RemoteMovieRepository>(),
+    get<_i16.LocalMovieRepository>(),
+    get<_i15.LocalMaxPagesRepository>(),
+  ));
+  gh.factory<_i26.SplashScreenBloc>(() => _i26.SplashScreenBloc(get<_i23.GenresService>()));
   return get;
 }

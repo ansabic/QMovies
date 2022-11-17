@@ -8,3 +8,5 @@ class RefreshFavorites extends FavoritesEvent {
 
   RefreshFavorites({required this.movieClicked});
 }
+
+class InitFavorites extends FavoritesEvent {}

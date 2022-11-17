@@ -36,6 +36,7 @@ class HiveBase {
     await Hive.openBox("movies", encryptionCipher: HiveAesCipher(base64Decode(key)));
     await Hive.openBox("max_pages", encryptionCipher: HiveAesCipher(base64Decode(key)));
     await Hive.openBox("genres", encryptionCipher: HiveAesCipher(base64Decode(key)));
+    await Hive.openBox("favorites", encryptionCipher: HiveAesCipher(base64Decode(key)));
   }
 
   static void _registerAdapters() {
@@ -44,6 +45,7 @@ class HiveBase {
       Hive.registerAdapter(MovieAdapter());
       Hive.registerAdapter(MaxPagesAdapter());
       Hive.registerAdapter(GenreAdapter());
+      Hive.registerAdapter(FavoriteAdapter());
     }
   }
 
@@ -52,6 +54,8 @@ class HiveBase {
   Box<dynamic> movies() => Hive.box("movies");
 
   Box<dynamic> genres() => Hive.box("genres");
+
+  Box<dynamic> favorites() => Hive.box("favorites");
 
   int key<T>() {
     switch (T) {
@@ -75,6 +79,8 @@ class HiveBase {
         return maxPages();
       case Genre:
         return genres();
+      case Favorite:
+        return favorites();
     }
     return null;
   }

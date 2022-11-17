@@ -11,7 +11,7 @@ import '../../../repository/local/local_movie/local_movie_repository.dart';
 part 'favorites_event.dart';
 part 'favorites_state.dart';
 
-@injectable
+@lazySingleton
 class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
   final FavoritesRepository _favoritesRepository;
   final LocalMovieRepository _localMovieRepository;
@@ -25,13 +25,21 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
       } else {
         await _favoritesRepository.insertElement(element: Favorite(id: event.movieClicked.id?.toInt() ?? 0));
       }
-      emit(RefreshedFavoritesState(
-          favorites: _localMovieRepository
-              .getAll()
-              .values
-              .flattened
-              .where((element) => _favoritesRepository.getAllElements().map((e) => e.id).contains(element.id))
-              .toList()));
+
+      emit(RefreshedFavoritesState(favorites: getFavoriteMovies()));
     });
+    on<InitFavorites>((event, emit) {
+      emit(RefreshedFavoritesState(favorites: getFavoriteMovies()));
+    });
+    add(InitFavorites());
+  }
+
+  List<Movie> getFavoriteMovies() {
+    return _localMovieRepository
+        .getAll()
+        .values
+        .flattened
+        .where((element) => _favoritesRepository.getAllElements().map((e) => e.id).contains(element.id))
+        .toList();
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:q_movies/common/assets.dart';
 import 'package:q_movies/common/custom_colors.dart';
@@ -12,10 +13,10 @@ class MovieItem extends StatelessWidget {
   final Movie movie;
   final double starSize = 16;
   final double pictureSize = 100;
-  final double topPadding = 20;
+  final double bottomPadding = 20;
   final double horizontalPadding = 20;
   final double imageRightPadding = 16;
-  final double favoriteIconSize = 15;
+  final double favoriteIconSize = 18;
   final bool picked;
 
   const MovieItem({Key? key, required this.movie, required this.picked}) : super(key: key);
@@ -27,7 +28,7 @@ class MovieItem extends StatelessWidget {
         .where((element) => movie.genreIds?.contains(element.id) == true)
         .toList();
     return Padding(
-      padding: EdgeInsets.only(top: horizontalPadding, left: horizontalPadding, right: horizontalPadding),
+      padding: EdgeInsets.only(bottom: bottomPadding, left: horizontalPadding, right: horizontalPadding),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -36,6 +37,11 @@ class MovieItem extends StatelessWidget {
             width: pictureSize,
             height: pictureSize,
             fit: BoxFit.cover,
+            errorBuilder: ((context, error, stackTrace) => Icon(
+                  Icons.error,
+                  size: pictureSize,
+                  color: CustomColors.qOrange,
+                )),
           ),
           Expanded(
             child: Padding(
@@ -72,26 +78,28 @@ class MovieItem extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: genres.length,
-                      itemBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.only(right: 4.0),
-                        child: Container(
-                          decoration:
-                              BoxDecoration(color: CustomColors.genreGrey, borderRadius: BorderRadius.circular(4)),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                            child: Text(
-                              genres[index].name ?? "Unknown",
-                              style: const TextStyle(color: CustomColors.almostWhite, fontSize: 11),
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        physics: const BouncingScrollPhysics(),
+                        child: Row(
+                            children: genres.map((e) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 4.0),
+                            child: Container(
+                              decoration:
+                                  BoxDecoration(color: CustomColors.genreGrey, borderRadius: BorderRadius.circular(4)),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                                child: Text(
+                                  e.name ?? "Unknown",
+                                  style: const TextStyle(color: CustomColors.almostWhite, fontSize: 11),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
+                          );
+                        }).toList()),
+                      ))
                 ],
               ),
             ),

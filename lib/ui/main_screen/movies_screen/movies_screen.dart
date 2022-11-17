@@ -1,37 +1,40 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:q_movies/model/movie/movie.dart';
-import 'package:q_movies/repository/local/local_movie/local_movie_repository.dart';
+import 'package:q_movies/service/movies_pagination_controller/movies_pagination_controller.dart';
 import 'package:q_movies/service/movies_service/movies_service.dart';
+import 'package:q_movies/service/movies_service/movies_state.dart';
 import 'package:q_movies/ui/main_screen/favorites_screen/favorites_bloc.dart';
 import 'package:q_movies/ui/main_screen/movies_screen/movie_item/movie_item.dart';
+import 'package:q_movies/ui/main_screen/movies_screen/title/title.dart';
 
 import '../../../di/di.dart';
-import '../../../service/movies_pagination_controller/movies_pagination_controller.dart';
 
 class MoviesScreen extends StatelessWidget {
   const MoviesScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<Movie>>(
-        initialData: getIt<LocalMovieRepository>().getAll().values.flattened.toList(),
-        stream: getIt<MoviesService>().moviesStream(),
-        builder: (context, movies) {
-          return BlocBuilder<FavoritesBloc, FavoritesState>(
-            builder: (context, state) {
-              return ListView.builder(
-                  controller: getIt<MoviesPaginationController>().scrollController,
-                  shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  itemCount: (movies.data ?? []).length,
-                  itemBuilder: (context, index) {
-                    final item = (movies.data ?? [])[index];
-                    return MovieItem(movie: item, picked: state.favorites.contains(item));
-                  });
-            },
-          );
-        });
+    return BlocBuilder<MovieService, MoviesState>(builder: (context, moviesState) {
+      return Column(
+        children: [
+          const CustomTitle(title: "Popular"),
+          Expanded(
+            child: ListView.builder(
+                controller: getIt<MoviesPaginationController>().scrollController,
+                shrinkWrap: true,
+                padding: EdgeInsets.zero,
+                itemCount: moviesState.movies.length,
+                itemBuilder: (context, index) {
+                  final item = moviesState.movies[index];
+                  return BlocBuilder<FavoritesBloc, FavoritesState>(
+                    builder: (context, favoritesState) {
+                      return MovieItem(movie: item, picked: favoritesState.favorites.contains(item));
+                    },
+                  );
+                }),
+          ),
+        ],
+      );
+    });
   }
 }

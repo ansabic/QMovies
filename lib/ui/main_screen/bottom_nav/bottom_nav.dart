@@ -24,7 +24,7 @@ class BottomNav extends StatelessWidget {
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
-                  BlocProvider.of<MainScreenBloc>(context).add(ChangePage(page: 0));
+                  BlocProvider.of<MainScreenBloc>(context).add(ChangePageNavigation(page: 0));
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(left: 60.0),
@@ -62,7 +62,7 @@ class BottomNav extends StatelessWidget {
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
-                  BlocProvider.of<MainScreenBloc>(context).add(ChangePage(page: 1));
+                  BlocProvider.of<MainScreenBloc>(context).add(ChangePageNavigation(page: 1));
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(right: 60.0),
