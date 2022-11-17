@@ -16,7 +16,7 @@ class QMoviesMaterial extends StatelessWidget {
         return PageRouteBuilder(
           settings: settings,
           pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
-            return AppConfig.routes[RouteNames.mainScreen]!(context);
+            return AppConfig.routes[settings.name]!(context);
           },
           transitionDuration: const Duration(milliseconds: 1200),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {

@@ -12,4 +12,6 @@ class Assets {
   static const favoritePicked = "${_assetsRoot}favorite_picked.png";
 
   static const favoriteUnpicked = "${_assetsRoot}favorite_unpicked.png";
+
+  static const arrowLeft = "${_assetsRoot}arrow_left.png";
 }

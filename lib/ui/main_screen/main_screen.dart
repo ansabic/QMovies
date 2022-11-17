@@ -5,6 +5,7 @@ import 'package:q_movies/model/main_pages/main_pages.dart';
 import 'package:q_movies/service/movies_service/movies_service.dart';
 import 'package:q_movies/ui/base_scaffold/base_scaffold.dart';
 import 'package:q_movies/ui/common/error_screen.dart';
+import 'package:q_movies/ui/details_screen/movie_details_bloc.dart';
 import 'package:q_movies/ui/main_screen/favorites_screen/favorites_screen.dart';
 import 'package:q_movies/ui/main_screen/movies_screen/base_header/base_header.dart';
 import 'package:q_movies/ui/main_screen/movies_screen/movies_screen.dart';
@@ -33,7 +34,9 @@ class MainScreen extends StatelessWidget {
           ),
           BlocProvider(
             create: (_) => getIt<MovieService>(),
-          )
+          ),
+          BlocProvider(
+              create: (_) => getIt<MovieDetailsBloc>(),)
         ],
         child: Column(
           children: [

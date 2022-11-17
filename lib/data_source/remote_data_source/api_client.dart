@@ -28,4 +28,10 @@ class ApiClient with ImdbEndpoints {
     const fullPath = EndpointsConstants.baseUrl + EndpointsConstants.genres;
     return await _dioClient.get(fullPath);
   }
+
+  @override
+  Future<Response<Map<String, dynamic>>> getAllMovieDetails({required int movieId}) async {
+    final fullPath = EndpointsConstants.baseUrl + EndpointsConstants.movieDetails + movieId.toString();
+    return await _dioClient.get(fullPath);
+  }
 }

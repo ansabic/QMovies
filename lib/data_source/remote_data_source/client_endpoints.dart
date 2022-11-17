@@ -5,4 +5,6 @@ abstract class ImdbEndpoints {
   Future<Response<Map<String, dynamic>>> getAllPopularPaginated({required Language language, required int page});
 
   Future<Response<Map<String, dynamic>>> getAllGenres();
+
+  Future<Response<Map<String, dynamic>>> getAllMovieDetails({required int movieId});
 }
