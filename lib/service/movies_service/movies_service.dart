@@ -25,34 +25,30 @@ class MovieService extends Bloc<MoviesEvent, MoviesState> {
     on<CheckActivity>((event, emit) {
       if (!state.active) {
         emit(MoviesRefreshedState(active: true, movies: state.movies));
-        add(SyncMoviesMaxPage(page: event.page));
+        add(SyncMoviesMaxPage());
       }
     });
     on<SyncMoviesMaxPage>((event, emit) async {
       final maxPages = _maxPagesRepository.getSingle() ?? 0;
-      final loadedPages = _localMovieRepository.getAll().keys.length;
 
-      if (event.page > loadedPages) {
-        final moviesRemoteResult = await _remoteMovieRepository.getMoviesPage(page: event.page);
-        if (moviesRemoteResult is Value) {
-          final moviesRemote = moviesRemoteResult.value!;
-          await _localMovieRepository.putAt(key: moviesRemote.page, element: moviesRemote.movies);
-          if (moviesRemote.total != maxPages) {
-            await _maxPagesRepository.removeData();
-            await _maxPagesRepository.setSingle(data: MaxPages(max: moviesRemote.total));
-          }
+      final moviesRemoteResult = await _remoteMovieRepository.getMoviesPage(page: _localMovieRepository.getAll().length + 1);
+      if (moviesRemoteResult is Value) {
+        final moviesRemote = moviesRemoteResult.value!;
+        await _localMovieRepository.putAt(key: moviesRemote.page, element: moviesRemote.movies);
+        if (moviesRemote.total != maxPages) {
+          await _maxPagesRepository.removeData();
+          await _maxPagesRepository.setSingle(data: MaxPages(max: moviesRemote.total));
         }
-        emit(MoviesRefreshedState(
-          movies: _localMovieRepository
-              .getAll()
-              .entries
-              .where((element) => element.key <= event.page)
-              .map((e) => e.value)
-              .flattened
-              .toList(),
-          active: false,
-        ));
       }
+      emit(MoviesRefreshedState(
+        movies: _localMovieRepository
+            .getAll()
+            .entries
+            .map((e) => e.value)
+            .flattened
+            .toList(),
+        active: false,
+      ));
     });
     add(InitMovies());
   }

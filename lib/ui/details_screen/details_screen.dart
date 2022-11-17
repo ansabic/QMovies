@@ -22,7 +22,6 @@ class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    debugPrint(height.toString());
     return BaseScaffold(
         child: MultiBlocProvider(
       providers: [

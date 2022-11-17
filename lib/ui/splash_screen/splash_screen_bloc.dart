@@ -13,11 +13,10 @@ part 'splash_screen_state.dart';
 @injectable
 class SplashScreenBloc extends Bloc<SplashScreenEvent, SplashScreenState> {
   final GenresService _genresService;
-  final initialSize = 3;
 
   SplashScreenBloc(this._genresService) : super(SplashScreenInitial()) {
     on<StartLoading>((event, emit) async {
-      getIt<MovieService>().add(CheckActivity(page: initialSize));
+      getIt<MovieService>().add(CheckActivity());
       await _genresService.syncGenres();
       add(Proceed());
     });

@@ -24,7 +24,7 @@ class MoviesPaginationController extends Bloc<MoviesPaginationEvent, MoviesPagin
 
   MoviesPaginationController(this._maxPagesRepository, this._localMovieRepository) : super(MoviesPaginationInitial()) {
     on<LoadNext>((event, emit) {
-      getIt<MovieService>().add(CheckActivity(page: state.currentPage));
+      getIt<MovieService>().add(CheckActivity());
     });
     on<InitMoviesPagination>((event, emit) {
       _scrollController.addListener(scrollListener);
